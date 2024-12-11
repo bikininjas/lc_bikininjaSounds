@@ -6,8 +6,8 @@ on:
   pull_request: 
     
 permissions:
-  contents: write # to be able to publish a GitHub release
-  pull-requests: write # otherwise it fails the success check of semantic-release
+  contents: write
+  pull-requests: write
 jobs:
   build:
     runs-on: ubuntu-latest
