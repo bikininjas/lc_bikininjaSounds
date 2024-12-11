@@ -2,8 +2,10 @@ name: Build Version and release
 
 on:
   push:
+    branches: "master"
 permissions:
-  contents: write
+  contents: write # to be able to publish a GitHub release
+  pull-requests: write # otherwise it fails the success check of semantic-release
 jobs:
   build:
     runs-on: ubuntu-latest
