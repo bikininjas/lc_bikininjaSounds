@@ -3,6 +3,8 @@ name: Build Version and release
 on:
   push:
     branches: "master"
+  pull_request: 
+    
 permissions:
   contents: write # to be able to publish a GitHub release
   pull-requests: write # otherwise it fails the success check of semantic-release
@@ -12,35 +14,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create Version (dry run)
-        id: version_create
-        uses: huggingface/semver-release-action@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump version and push tag
+        id: create_tag
+        uses: hennejg/github-tag-action@v4.3.1
         with:
-          branches: '["master"]'
-          dryRun: false
-          commitAnalyzerPluginOpts: |
-            {
-              "preset": "conventionalcommits",
-              "releaseRules": [
-                { "type": "docs", "scope": "README", "release": "patch" },
-                { "type": "action", "scope": "action", "release": "patch" },
-                { "type": "patch", "scope": "audio", "release": "patch" },
-                { "type": "chore", "scope": "tool-versions", "release": "patch" },
-                { "type": "refactor", "scope": "core-*", "release": "minor" },
-                { "type": "refactor", "release": "patch" },
-                { "scope": "no-release", "release": false }
-              ]
-            }
-      # - name: Run Changelog CI
-      #   uses: saadmk11/changelog-ci@v1.1.2
-      #   with:
-      #     changelog_filename: CHANGELOG.md
-      #     release_version: ${{ steps.outputs.version_create.version }}
-      # - name: Create Release
-      #   id: version_create
-      #   uses: huggingface/semver-release-action@latest
-      #   with:
-      #     branches: "master"
-      #     dryRun: true
+          default_bump: "patch"
+          release_branches: "master"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@v1.1.2
+        with:
+          changelog_filename: CHANGELOG.md
+          release_version: ${{ steps.outputs.create_tag.new_version }}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.outputs.create_tag.new_version }}
+          make_latest: true
