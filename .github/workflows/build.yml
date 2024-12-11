@@ -2,20 +2,29 @@ name: Build Version and release
 
 on:
   push:
+    branches: "master"
 permissions:
-  contents: write
+  contents: write # to be able to publish a GitHub release
+  pull-requests: write # otherwise it fails the success check of semantic-release
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Git Version
-        id: version
-        uses: codacy/git-version@2.8.0
-      - name: Release
-        uses: softprops/action-gh-release@v2.2.0
+      - name: Create Version (dry run)
+        id: version_create
+        uses: huggingface/semver-release-action@latest
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          body_path: CHANGELOG.md
-          make_latest: true
+          dryRun: true
+      # - name: Run Changelog CI
+      #   uses: saadmk11/changelog-ci@v1.1.2
+      #   with:
+      #     changelog_filename: CHANGELOG.md
+      #     release_version: ${{ steps.outputs.version_create.version }}
+      # - name: Create Release
+      #   id: version_create
+      #   uses: huggingface/semver-release-action@latest
+      #   with:
+      #     branches: ["master", "dev"]
+      #     dryRun: true

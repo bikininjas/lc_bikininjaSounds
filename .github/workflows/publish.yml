@@ -1,8 +1,8 @@
-name: Main
+name: Publish Package on Thunderstore
 
 on:
   release: 
-    types: [released]
+    types: [published]
 
 jobs:
   build:
