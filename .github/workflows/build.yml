@@ -14,20 +14,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Bump version and push tag
-        id: create_tag
-        uses: hennejg/github-tag-action@v4.3.1
+      - name: Get Next Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
         with:
-          default_bump: "patch"
-          release_branches: "master"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run Changelog CI
-        uses: saadmk11/changelog-ci@v1.1.2
+          majorList: "major"
+          minorList: "minor"
+          patchAll: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
         with:
-          changelog_filename: CHANGELOG.md
-          release_version: ${{ steps.outputs.create_tag.new_version }}
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.outputs.create_tag.new_version }}
-          make_latest: true
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          name: ${{ steps.semver.outputs.nextStrict }}
+          body: Changelog Contents
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Run Changelog CI
+      #   uses: saadmk11/changelog-ci@v1.1.2
+      #   with:
+      #     changelog_filename: CHANGELOG.md
+      #     release_version: ${{ steps.outputs.create_tag.new_version }}
