@@ -16,6 +16,7 @@ jobs:
         id: version_create
         uses: huggingface/semver-release-action@latest
         with:
+          branches: "master"
           dryRun: true
       # - name: Run Changelog CI
       #   uses: saadmk11/changelog-ci@v1.1.2
@@ -26,5 +27,5 @@ jobs:
       #   id: version_create
       #   uses: huggingface/semver-release-action@latest
       #   with:
-      #     branches: ["master", "dev"]
+      #     branches: "master"
       #     dryRun: true
