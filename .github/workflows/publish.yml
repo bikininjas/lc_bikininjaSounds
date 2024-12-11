@@ -1,0 +1,29 @@
+name: Main
+
+on:
+  release: 
+    types: [released]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: GreenTF/upload-thunderstore-package@v4.3
+        with:
+          namespace: Bikininjas # the thunderstore 'team' to publish under
+          description: Tests Modding Bikininjas Sounds
+          token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
+          name: Bikininjas Sounds # the name of the package
+          version: ${{ github.ref_name }} # Use the tag as the package version
+          community: lethal-company
+          readme: ''
+          deps: |
+            BepInEx-BepInExPack@5.4.2100
+            Clementinise-CustomSounds@2.3.2
+            no00ob-LCSoundTool@1.5.1
+          website: "https://github.com/bikininjas/lc_bikininjaSounds"
+          repo: thunderstore.io
+          categories: | # <-- notice this pipe character
+              audio

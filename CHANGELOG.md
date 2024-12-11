@@ -1,10 +1,14 @@
-### v1.0.1
+### 1.0.2
+
+Changed github Action
+
+### 1.0.1
 - Small update
 
 AllPlayersDead : Mix sardoche
 DeadlineAlarm : "Mais vous etes pas mort espece de connard"
 
-### v1.0.0
+### 1.0.0
 - Release
 
 Modified sounds :
