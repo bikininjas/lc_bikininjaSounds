@@ -16,7 +16,8 @@ jobs:
           owner: bikininjas
           name: lc_bikininjaSounds
           # prefix: v # remove prefix from version if present.
-
+      - name: Zip package
+        run: 7z a -tzip -mx=9 bikininjaSounds-${{ steps.latest_release.outputs.release }}.zip *
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
@@ -32,5 +33,6 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "https://github.com/bikininjas/lc_bikininjaSounds"
           repo: thunderstore.io
+          file: ./bikininjaSounds-${{ steps.latest_release.outputs.release }}.zip
           categories: | # <-- notice this pipe character
               audio
