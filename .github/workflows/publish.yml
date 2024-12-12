@@ -1,10 +1,11 @@
 name: Publish Package on Thunderstore
 
 on:
-  release:
   workflow_dispatch:
   push:
     branches: "fix_testPublish"
+    tags:
+      - '*'
 
 env:
   description: "Tests Modding Bikininjas Sounds"
@@ -24,18 +25,18 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-      # - name: Get Release Zip
-      #   run: |
-      #     wget https://github.com/${{ github.repository }}/archive/refs/tags/${{ env.release_number }}.zip -O bikininjaSounds-${{ env.release_number }}.zip
+      - name: Zip files
+        run: |
+          7z a -tzip -mx=9 ./Releases/bikininjaSounds-${{ env.release_number }}.zip
 
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
           description: ${{ env.description }}
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
-          name: ${{ env.mod_name }}-${{ env.release_number }}
+          name: ${{ env.mod_name }}
           version: ${{ env.release_number }} # Use the tag as the package version
-          community: "lethal-company"
+          community: lethal-company
           deps: |
             BepInEx-BepInExPack@5.4.2100
             Clementinise-CustomSounds@2.3.2
@@ -43,6 +44,7 @@ jobs:
           website: "${{ env.website_url }}"
           repo: thunderstore.io
           # path: ./
+          file: ./Releases/bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
 
