@@ -30,6 +30,6 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "https://github.com/bikininjas/lc_bikininjaSounds"
           repo: thunderstore.io
-          file: ./bikininjaSounds-${{ steps.latest_release.outputs.release }}.zip
+          file: ./bikininjaSounds-${{ steps.latest_release.outputs.RELEASE_NUMBER }}.zip
           categories: | # <-- notice this pipe character
               audio
