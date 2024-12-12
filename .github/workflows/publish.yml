@@ -7,8 +7,8 @@ on:
       - '*'
 
 env:
-  description: "Tests Modding Bikininjas Sounds"
-  mod_name: "BikininjasSoundsTest"
+  description: "Bikininjas Sounds with french people voices and memes"
+  mod_name: "BikininjasSounds"
   website_url: "https://github.com/${{ github.repository }}"
 
 jobs:
@@ -24,9 +24,6 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1.4.0"
       - name: Release Changelog Builder
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
@@ -36,6 +33,7 @@ jobs:
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
           fetchViaCommits: true
+          mode: "HYBRID"
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
