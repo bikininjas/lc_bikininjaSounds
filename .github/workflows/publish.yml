@@ -10,21 +10,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - id: latest_release # used to read version in other steps.
-        uses: razonyang/github-action-github-latest-release@v1
-        with:
-          owner: bikininjas
-          name: lc_bikininjaSounds
-          # prefix: v # remove prefix from version if present.
+      - name: Get latest release number
+        id: latest_release # used to read version in other steps.
+        run: RELEASE_NUMBER=$(curl https://api.github.com/repos/bikininjas/lc_bikininjaSounds/releases/latest -s | jq '.tag_name // empty') >> $GITHUB_OUTPUT
       - name: Zip package
-        run: 7z a -tzip -mx=9 bikininjaSounds-${{ steps.latest_release.outputs.release }}.zip *
+        run: 7z a -tzip -mx=9 bikininjaSounds-${{ steps.latest_release.outputs.RELEASE_NUMBER }}.zip *
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
           description: Tests Modding Bikininjas Sounds
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
           name: Bikininjas Sounds # the name of the package
-          version: ${{ steps.latest_release.outputs.release }} # Use the tag as the package version
+          version: ${{ steps.latest_release.outputs.RELEASE_NUMBER }} # Use the tag as the package version
           community: lethal-company
           readme: ''
           deps: |
