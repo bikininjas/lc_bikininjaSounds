@@ -25,9 +25,9 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-      - name: Zip files
-        run: |
-          7z a -tzip -mx=9 ./Releases/bikininjaSounds-${{ env.release_number }}.zip
+      # - name: Zip files
+      #   run: |
+      #     7z a -tzip -mx=9 ./Releases/bikininjaSounds-${{ env.release_number }}.zip
 
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
@@ -44,7 +44,7 @@ jobs:
           website: "${{ env.website_url }}"
           repo: thunderstore.io
           # path: ./
-          file: ./Releases/bikininjaSounds-${{ env.release_number }}.zip
+          # file: ./Releases/bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
 

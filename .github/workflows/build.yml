@@ -1,8 +1,9 @@
 name: Build Version and release
 
 on:
+  workflow_dispatch:
   push:
-    branches: "fix_testPublish"
+    branches: "master"
 permissions:
   contents: write
   pull-requests: write
