@@ -46,6 +46,7 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "${{ env.website_url }}"
           repo: thunderstore.io
-          # file: ./bikininjaSounds-${{ env.release_number }}.zip
+          path: ./
+          file: ./bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
