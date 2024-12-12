@@ -37,6 +37,7 @@ jobs:
           toTag: "${{ env.release_number }}"
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetchViaCommits: true
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
