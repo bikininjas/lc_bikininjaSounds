@@ -33,7 +33,7 @@ jobs:
           namespace: Bikininjas # the thunderstore 'team' to publish under
           description: ${{ env.description }}
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
-          name: ${{ env.mod_name }}
+          name: ${{ env.mod_name }}-${{ env.release_number }}
           version: ${{ env.release_number }} # Use the tag as the package version
           community: "lethal-company"
           deps: |
