@@ -13,17 +13,19 @@ jobs:
       - name: Get latest release number
         id: latest_release # used to read version in other steps.
         run: |
-          RELEASE_NUMBER=$(curl https://api.github.com/repos/bikininjas/lc_bikininjaSounds/releases/latest -s | jq '.tag_name // empty') >> $GITHUB_OUTPUT
-          echo "RELEASE_NUMBER is $RELEASE_NUMBER"
+          release_number=$(curl https://api.github.com/repos/bikininjas/lc_bikininjaSounds/releases/latest -s | jq '.tag_name // empty') >> $GITHUB_OUTPUT
+          echo "RELEASE_NUMBER is $release_number"
       - name: Zip package
-        run: 7z a -tzip -mx=9 bikininjaSounds-${{ steps.latest_release.outputs.RELEASE_NUMBER }}.zip *
+        run: |
+          echo "RELEASE_NUMBER is ${{ steps.latest_release.outputs.release_number }}"
+          7z a -tzip -mx=9 bikininjaSounds-${{ steps.latest_release.outputs.release_number }}.zip *
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
           description: Tests Modding Bikininjas Sounds
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
           name: Bikininjas Sounds # the name of the package
-          version: ${{ steps.latest_release.outputs.RELEASE_NUMBER }} # Use the tag as the package version
+          version: ${{ steps.latest_release.outputs.release_number }} # Use the tag as the package version
           community: lethal-company
           readme: ''
           deps: |
@@ -32,6 +34,6 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "https://github.com/bikininjas/lc_bikininjaSounds"
           repo: thunderstore.io
-          file: ./bikininjaSounds-${{ steps.latest_release.outputs.RELEASE_NUMBER }}.zip
+          file: ./bikininjaSounds-${{ steps.latest_release.outputs.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
