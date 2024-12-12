@@ -43,7 +43,6 @@ jobs:
           website: "${{ env.website_url }}"
           repo: thunderstore.io
           # path: ./
-          file: ./bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
 
