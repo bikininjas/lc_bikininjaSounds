@@ -2,7 +2,9 @@ name: Publish Package on Thunderstore
 
 on:
   release:
-  workflow_dispatch: 
+  workflow_dispatch:
+  push:
+    branches: "fix_testPublish"
 
 env:
   description: "Tests Modding Bikininjas Sounds"
@@ -30,7 +32,7 @@ jobs:
           name: "manifest.json"
           json: '{"name":"bikininjaSounds", "version_number":"${{ env.release_number }}", "website_url":"${{ env.website_url }}","description":"${{ env.description }}", "dependencies": ["BepInEx-BepInExPack-5.4.2100", "Clementinise-CustomSounds-2.3.2", "no00ob-LCSoundTool-1.5.1"]}'
 
-      - uses: GreenTF/upload-thunderstore-package@v4.3
+      - uses: dhkatz/thunderstore-publish@v1.0.1
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
           description: ${{ env.description }}
