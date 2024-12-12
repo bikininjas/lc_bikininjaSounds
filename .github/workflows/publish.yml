@@ -22,15 +22,15 @@ jobs:
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
           echo "RELEASE_NUMBER is ${release_number}"
-      - name: Get Release Zip
-        run: |
-          wget https://github.com/${{ github.repository }}/archive/refs/tags/${{ env.release_number }}.zip -O bikininjaSounds-${{ env.release_number }}.zip
-      - name: Generate manifest.json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "manifest.json"
-          json: '{"name":"bikininjaSounds", "version_number":"${{ env.release_number }}", "website_url":"${{ env.website_url }}","description":"${{ env.description }}", "dependencies": ["BepInEx-BepInExPack-5.4.2100", "Clementinise-CustomSounds-2.3.2", "no00ob-LCSoundTool-1.5.1"]}'
+      # - name: Get Release Zip
+      #   run: |
+      #     wget https://github.com/${{ github.repository }}/archive/refs/tags/${{ env.release_number }}.zip -O bikininjaSounds-${{ env.release_number }}.zip
+      # - name: Generate manifest.json
+      #   id: create-json
+      #   uses: jsdaniell/create-json@v1.2.3
+      #   with:
+      #     name: "manifest.json"
+      #     json: '{"name":"bikininjaSounds", "version_number":"${{ env.release_number }}", "website_url":"${{ env.website_url }}","description":"${{ env.description }}", "dependencies": ["BepInEx-BepInExPack-5.4.2100", "Clementinise-CustomSounds-2.3.2", "no00ob-LCSoundTool-1.5.1"]}'
 
       - uses: dhkatz/thunderstore-publish@v1.0.1
         with:
@@ -46,6 +46,6 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "${{ env.website_url }}"
           repo: thunderstore.io
-          file: ./bikininjaSounds-${{ env.release_number }}.zip
+          # file: ./bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
