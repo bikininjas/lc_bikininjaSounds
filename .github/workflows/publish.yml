@@ -3,7 +3,6 @@ name: Publish Package on Thunderstore
 on:
   workflow_dispatch:
   push:
-    branches: "fix_testPublish"
     tags:
       - '*'
 

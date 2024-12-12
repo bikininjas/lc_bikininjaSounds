@@ -1,6 +1,6 @@
 # Bikininja Sounds
 
-## TEST : DO NOT DOWNLOAD
+## Purpose
 
 This small project includes custom sounds for a few things in Lethal Company. Those sounds are mostly french memes.
 
@@ -14,3 +14,4 @@ Please note that I dislike all those people but it's fun to integrate them as mo
 - Turret : When a turret sees you, it says "AH !" from Denis Brognart
 - Hoarding bug : Francois Damiens et Mynthos
 - OldBird : Sarkozy
+- Icetruck (dropship): Changed to "Engelwood - Crystal Dolphin"
