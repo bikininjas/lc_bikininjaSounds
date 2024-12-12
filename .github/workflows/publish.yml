@@ -18,6 +18,7 @@ jobs:
       - name: Zip package
         run: |
           wget https://github.com/${{ github.repository }}/archive/refs/tags/${{ env.release_number }}.zip -O bikininjaSounds.${{ env.release_number }}.zip
+          ls -larth
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
