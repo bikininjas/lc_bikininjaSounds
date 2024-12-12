@@ -2,7 +2,7 @@ name: Build Version and release
 
 on:
   push:
-    branches: "master"
+    branches: "fix_testPublish"
 permissions:
   contents: write
   pull-requests: write
