@@ -10,7 +10,7 @@ on:
 env:
   description: "Tests Modding Bikininjas Sounds"
   mod_name: "BikininjasSoundsTest"
-  website_url: 'https://github.com/${{ github.repository }}'
+  website_url: "https://github.com/${{ github.repository }}"
 
 jobs:
   publish:
@@ -25,10 +25,9 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
-          namespace: "Bikininjas" # the thunderstore 'team' to publish under
+          namespace: Bikininjas # the thunderstore 'team' to publish under
           description: ${{ env.description }}
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
           name: ${{ env.mod_name }}
