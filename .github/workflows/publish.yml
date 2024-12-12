@@ -1,8 +1,8 @@
 name: Publish Package on Thunderstore
 
 on:
-  release: 
-    types: [published]
+  release:
+  workflow_dispatch: 
 
 jobs:
   publish:
