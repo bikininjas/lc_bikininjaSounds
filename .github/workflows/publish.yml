@@ -31,7 +31,7 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
           ignorePreReleases: "true"
-          fromTag: "0.0.1"
+          fromTag: "1.0.0"
           toTag: "${{ env.release_number }}"
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
