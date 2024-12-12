@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - id: latest_release
-        uses: pozetroninc/github-action-get-latest-release@master
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: ${{ env.GITHUB_REPOSITORY }}
 
