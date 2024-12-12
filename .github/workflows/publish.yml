@@ -10,8 +10,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - id: latest_release
-        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+      - id: latest_release # used to read version in other steps.
+        uses: razonyang/github-action-github-latest-release@v1
+        with:
+          owner: bikininjas
+          name: lc_bikininjaSounds
+          # prefix: v # remove prefix from version if present.
         with:
           repository: ${{ env.GITHUB_REPOSITORY }}
 
