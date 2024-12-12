@@ -1,8 +1,16 @@
 name: Publish Package on Thunderstore
 
 on:
-  release:
-  workflow_dispatch: 
+  workflow_dispatch:
+  push:
+    branches: "fix_testPublish"
+    tags:
+      - '*'
+
+env:
+  description: "Tests Modding Bikininjas Sounds"
+  mod_name: "BikininjasSoundsTest"
+  website_url: "https://github.com/${{ github.repository }}"
 
 jobs:
   publish:
@@ -10,36 +18,51 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: "call action"
-        id: last_release
-        uses: InsonusK/get-latest-release@v1.1.0
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          view_top: 1
-      - name: "Print result"
+          fetch-depth: 0
+          filter: tree:0
+      - name: Get latest release number
+        id: latest_release # used to read version in other steps.
         run: |
-          echo "id: ${{ steps.last_release.outputs.id }}"
-          echo "name: ${{ steps.last_release.outputs.name }}"
-          echo "tag_name: ${{ steps.last_release.outputs.tag_name }}"
-          echo "created_at: ${{ steps.last_release.outputs.created_at }}"
-          echo "draft: ${{ steps.last_release.outputs.draft }}"
-          echo "prerelease: ${{ steps.last_release.outputs.prerelease }}"
-          echo "url: ${{ steps.last_release.outputs.url }}"
-          echo "html_url: ${{ steps.last_release.outputs.html_url }}"
-      # - uses: GreenTF/upload-thunderstore-package@v4.3
+          echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
+      # - name: Zip files
+      #   run: |
+      #     7z a -tzip -mx=9 ./Releases/bikininjaSounds-${{ env.release_number }}.zip
+
+      - uses: GreenTF/upload-thunderstore-package@v4.3
+        with:
+          namespace: Bikininjas # the thunderstore 'team' to publish under
+          description: ${{ env.description }}
+          token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
+          name: ${{ env.mod_name }}
+          version: ${{ env.release_number }} # Use the tag as the package version
+          community: lethal-company
+          deps: |
+            BepInEx-BepInExPack@5.4.2100
+            Clementinise-CustomSounds@2.3.2
+            no00ob-LCSoundTool@1.5.1
+          website: "${{ env.website_url }}"
+          repo: thunderstore.io
+          # path: ./
+          # file: ./Releases/bikininjaSounds-${{ env.release_number }}.zip
+          categories: | # <-- notice this pipe character
+              audio
+
+      # - uses: dhkatz/thunderstore-publish@v1.0.1
       #   with:
       #     namespace: Bikininjas # the thunderstore 'team' to publish under
-      #     description: Tests Modding Bikininjas Sounds
+      #     description: ${{ env.description }}
       #     token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
-      #     name: Bikininjas Sounds # the name of the package
-      #     version: ${{ github.ref_name }} # Use the tag as the package version
-      #     community: lethal-company
-      #     readme: ''
+      #     name: ${{ env.mod_name }}
+      #     version: ${{ env.release_number }} # Use the tag as the package version
+      #     communities: "lethal-company"
       #     deps: |
       #       BepInEx-BepInExPack@5.4.2100
       #       Clementinise-CustomSounds@2.3.2
       #       no00ob-LCSoundTool@1.5.1
-      #     website: "https://github.com/bikininjas/lc_bikininjaSounds"
+      #     website: "${{ env.website_url }}"
       #     repo: thunderstore.io
+      #     path: ./
+      #     file: ./bikininjaSounds-${{ env.release_number }}.zip
       #     categories: | # <-- notice this pipe character
       #         audio
