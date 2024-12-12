@@ -39,7 +39,7 @@ jobs:
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
           name: ${{ env.mod_name }}
           version: ${{ env.release_number }} # Use the tag as the package version
-          community: lethal-company
+          communities: "lethal-company"
           deps: |
             BepInEx-BepInExPack@5.4.2100
             Clementinise-CustomSounds@2.3.2
