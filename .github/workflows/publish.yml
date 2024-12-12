@@ -10,36 +10,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: "call action"
-        id: last_release
-        uses: InsonusK/get-latest-release@v1.1.0
+      - id: latest_release
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          view_top: 1
-      - name: "Print result"
-        run: |
-          echo "id: ${{ steps.last_release.outputs.id }}"
-          echo "name: ${{ steps.last_release.outputs.name }}"
-          echo "tag_name: ${{ steps.last_release.outputs.tag_name }}"
-          echo "created_at: ${{ steps.last_release.outputs.created_at }}"
-          echo "draft: ${{ steps.last_release.outputs.draft }}"
-          echo "prerelease: ${{ steps.last_release.outputs.prerelease }}"
-          echo "url: ${{ steps.last_release.outputs.url }}"
-          echo "html_url: ${{ steps.last_release.outputs.html_url }}"
-      # - uses: GreenTF/upload-thunderstore-package@v4.3
-      #   with:
-      #     namespace: Bikininjas # the thunderstore 'team' to publish under
-      #     description: Tests Modding Bikininjas Sounds
-      #     token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
-      #     name: Bikininjas Sounds # the name of the package
-      #     version: ${{ github.ref_name }} # Use the tag as the package version
-      #     community: lethal-company
-      #     readme: ''
-      #     deps: |
-      #       BepInEx-BepInExPack@5.4.2100
-      #       Clementinise-CustomSounds@2.3.2
-      #       no00ob-LCSoundTool@1.5.1
-      #     website: "https://github.com/bikininjas/lc_bikininjaSounds"
-      #     repo: thunderstore.io
-      #     categories: | # <-- notice this pipe character
-      #         audio
+          repository: ${{ env.GITHUB_REPOSITORY }}
+
+      - uses: GreenTF/upload-thunderstore-package@v4.3
+        with:
+          namespace: Bikininjas # the thunderstore 'team' to publish under
+          description: Tests Modding Bikininjas Sounds
+          token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
+          name: Bikininjas Sounds # the name of the package
+          version: ${{ steps.latest_release.outputs.release }} # Use the tag as the package version
+          community: lethal-company
+          readme: ''
+          deps: |
+            BepInEx-BepInExPack@5.4.2100
+            Clementinise-CustomSounds@2.3.2
+            no00ob-LCSoundTool@1.5.1
+          website: "https://github.com/bikininjas/lc_bikininjaSounds"
+          repo: thunderstore.io
+          categories: | # <-- notice this pipe character
+              audio
