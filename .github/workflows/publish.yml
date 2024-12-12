@@ -16,8 +16,6 @@ jobs:
           owner: bikininjas
           name: lc_bikininjaSounds
           # prefix: v # remove prefix from version if present.
-        with:
-          repository: ${{ env.GITHUB_REPOSITORY }}
 
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
