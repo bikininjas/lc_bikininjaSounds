@@ -8,7 +8,7 @@ on:
 
 env:
   description: "Tests Modding Bikininjas Sounds"
-  mod_name: "Bikininjas Sounds Test"
+  mod_name: "BikininjasSoundsTest"
   website_url: "https://github.com/${{ github.repository }}"
 
 jobs:
