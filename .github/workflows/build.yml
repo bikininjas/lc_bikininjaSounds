@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: .
       - name: Get Next Version
         id: semver
         uses: ietf-tools/semver-action@v1
