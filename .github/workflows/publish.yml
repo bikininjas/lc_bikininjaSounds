@@ -10,7 +10,7 @@ on:
 env:
   description: "Tests Modding Bikininjas Sounds"
   mod_name: "BikininjasSoundsTest"
-  website_url: "https://github.com/${{ github.repository }}"
+  website_url: 'https://github.com/${{ github.repository }}'
 
 jobs:
   publish:
@@ -25,13 +25,10 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-      # - name: Zip files
-      #   run: |
-      #     7z a -tzip -mx=9 ./Releases/bikininjaSounds-${{ env.release_number }}.zip
 
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
-          namespace: Bikininjas # the thunderstore 'team' to publish under
+          namespace: "Bikininjas" # the thunderstore 'team' to publish under
           description: ${{ env.description }}
           token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
           name: ${{ env.mod_name }}
@@ -43,26 +40,5 @@ jobs:
             no00ob-LCSoundTool@1.5.1
           website: "${{ env.website_url }}"
           repo: thunderstore.io
-          # path: ./
-          # file: ./Releases/bikininjaSounds-${{ env.release_number }}.zip
           categories: | # <-- notice this pipe character
               audio
-
-      # - uses: dhkatz/thunderstore-publish@v1.0.1
-      #   with:
-      #     namespace: Bikininjas # the thunderstore 'team' to publish under
-      #     description: ${{ env.description }}
-      #     token: ${{ secrets.THUNDERSTORE_SVC_API_KEY }}
-      #     name: ${{ env.mod_name }}
-      #     version: ${{ env.release_number }} # Use the tag as the package version
-      #     communities: "lethal-company"
-      #     deps: |
-      #       BepInEx-BepInExPack@5.4.2100
-      #       Clementinise-CustomSounds@2.3.2
-      #       no00ob-LCSoundTool@1.5.1
-      #     website: "${{ env.website_url }}"
-      #     repo: thunderstore.io
-      #     path: ./
-      #     file: ./bikininjaSounds-${{ env.release_number }}.zip
-      #     categories: | # <-- notice this pipe character
-      #         audio
