@@ -28,7 +28,6 @@ jobs:
       - name: truncate current version number
         run: |
           echo "currentStrict=$(${{ steps.semver.outputs.current }} | cut -c2-)" >> GITHUB_ENV
-
       - name: Release Changelog Builder
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v5.0.0
@@ -39,7 +38,7 @@ jobs:
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
           fetchViaCommits: true
-          mode: "HYBRID"
+          mode: "COMMIT"
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
