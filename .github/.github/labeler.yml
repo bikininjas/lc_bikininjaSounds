@@ -1,0 +1,16 @@
+documentation:
+- changed-files:
+  - any-glob-to-any-file: '**/*.md'
+
+audio:
+- changed-files:
+  - any-glob-to-any-file: 
+    - '**/*.wav'
+    - '**/*.mp3'
+    - '**/*.ogg'
+    - '**/*.flac'
+
+ci:
+- changed-files:
+  - any-glob-to-any-file: 
+    - '.github/**'
