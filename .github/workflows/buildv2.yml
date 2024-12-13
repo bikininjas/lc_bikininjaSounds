@@ -27,7 +27,7 @@ jobs:
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
-          fromTag: ${{ steps.tag_version.outputs.previous_tag }}
+          fromTag: ${{ steps.tag_version.outputs.previous_version }}
           toTag: ${{ steps.tag_version.outputs.new_tag }}
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,9 +44,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
       - name: Create Pull Request
-        # id: cpr
+        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
+          branch: pre-${{ steps.changelog.outputs.toTag }}
           body: ${{steps.changelog.outputs.changelog}}
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
