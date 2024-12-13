@@ -12,6 +12,7 @@ Please note that I dislike all those people but it's fun to integrate them as mo
 
 - Bracken : Macron
 - Turret : When a turret sees you, it says "AH !" from Denis Brognart
-- Hoarding bug : Francois Damiens et Mynthos
+- Hoarding bug : Others (surprise)
 - OldBird : Sarkozy
 - Icetruck (dropship): Changed to "Engelwood - Crystal Dolphin"
+- Ship : Get dead and you'll see. Or just be in a disco mood
