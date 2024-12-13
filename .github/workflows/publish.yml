@@ -2,7 +2,8 @@ name: Publish Package on Thunderstore
 
 on:
   workflow_dispatch:
-  release: 
+  push:
+    branches: master
 
 env:
   description: "Bikininjas Sounds with french people voices and memes"
