@@ -27,30 +27,39 @@ jobs:
           noVersionBumpBehavior: "patch"
       - name: truncate current version number
         run: |
-          echo "currentStrict=$(${{ steps.semver.outputs.current }} | cut -c2-)" >> GITHUB_ENV
-      - name: Release Changelog Builder
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v5.0.0
+          echo "currentStrict=$(echo ${{ steps.semver.outputs.current }} | cut -c2-)" >> GITHUB_ENV
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          ignorePreReleases: "true"
-          fromTag: "${{ env.currentStrict }}"
-          toTag: "${{ steps.semver.outputs.nextStrict }}"
-          outputFile: "CHANGELOG.MD"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetchViaCommits: true
-          mode: "COMMIT"
-      - name: Create Release
-        uses: ncipollo/release-action@v1.14.0
-        with:
-          allowUpdates: true
-          draft: false
-          makeLatest: true
           name: ${{ steps.semver.outputs.nextStrict }}
-          tag: ${{ steps.semver.outputs.nextStrict }}
-          body: ${{steps.changelog.outputs.changelog}}
+          tag_name: ${{ steps.semver.outputs.nextStrict }}
+          body_path: CHANGELOG.MD
+          # note you'll typically need to create a personal access token
+          # with permissions to create releases in the other repo
           token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Release Changelog Builder
+      #   id: changelog
+      #   uses: mikepenz/release-changelog-builder-action@v5.0.0
+      #   with:
+      #     ignorePreReleases: "true"
+      #     fromTag: "${{ env.currentStrict }}"
+      #     toTag: "${{ steps.semver.outputs.nextStrict }}"
+      #     outputFile: "CHANGELOG.MD"
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     fetchViaCommits: true
+      #     mode: "COMMIT"
+      # - name: Create Release
+      #   uses: ncipollo/release-action@v1.14.0
+      #   with:
+      #     allowUpdates: true
+      #     draft: false
+      #     makeLatest: true
+      #     name: ${{ steps.semver.outputs.nextStrict }}
+      #     tag: ${{ steps.semver.outputs.nextStrict }}
+      #     body: ${{steps.changelog.outputs.changelog}}
+      #     token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Pull Request
-        id: cpr
+        # id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           body: ${{steps.changelog.outputs.changelog}}
