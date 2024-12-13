@@ -25,6 +25,21 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: "master"
           noVersionBumpBehavior: "patch"
+      - name: truncate current version number
+        run: |
+          echo "currentStrict=$(${{ steps.semver.outputs.current }} | cut -c2-)" >> GITHUB_ENV
+
+      - name: Release Changelog Builder
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v5.0.0
+        with:
+          ignorePreReleases: "true"
+          fromTag: "${{ env.currentStrict }}"
+          toTag: "${{ steps.semver.outputs.nextStrict }}"
+          outputFile: "CHANGELOG.MD"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetchViaCommits: true
+          mode: "HYBRID"
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
@@ -33,6 +48,16 @@ jobs:
           makeLatest: true
           name: ${{ steps.semver.outputs.nextStrict }}
           tag: ${{ steps.semver.outputs.nextStrict }}
-          body: Changelog Contents
+          body: ${{steps.changelog.outputs.changelog}}
           token: ${{ secrets.GITHUB_TOKEN }}
-          generateReleaseNotes: true
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          body: ${{steps.changelog.outputs.changelog}}
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+          echo "CHANGELOG : ${{steps.changelog.outputs.changelog}}"
