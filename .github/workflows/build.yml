@@ -23,7 +23,7 @@ jobs:
           minorList: "minor"
           patchAll: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "master"
+          branch: "${{ github.ref_name }}"
           noVersionBumpBehavior: "patch"
       - name: truncate current version number
         run: |
