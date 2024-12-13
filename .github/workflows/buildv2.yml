@@ -30,7 +30,7 @@ jobs:
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
-          fromTag: ${{ steps.tag_version.outputs.new_version }}
+          # fromTag: ${{ steps.tag_version.outputs.new_version }}
           toTag: ${{ steps.tag_version.outputs.new_version }}
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
