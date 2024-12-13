@@ -2,7 +2,9 @@ name: Build V2 - Version and release on PR
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
+    types:
+      - opened
 
 permissions:
   contents: write
@@ -17,41 +19,29 @@ jobs:
           sparse-checkout: .
       - name: Bump version and push tag
         id: tag_version
-        uses: jaywcjlove/create-tag-action@v2.2.0
+        uses: mathieudutour/github-tag-action@v6.2
         with:
-          prerelease: true
-          # draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: master
+          default_bump: patch
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_prerelease_bump: patch
+          tag_prefix: ''
       - name: Release Changelog Builder
-        if: steps.tag_version.outputs.successful
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
-          fromTag: ${{ steps.tag_version.outputs.preversionNumber }}
-          toTag: ${{ steps.tag_version.outputs.versionNumber }}
+          fromTag: ${{ steps.tag_version.outputs.new_version }}
+          toTag: ${{ steps.tag_version.outputs.new_version }}
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
           mode: "COMMIT"
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ steps.tag_version.outputs.versionNumber }}
-          tag_name: ${{ steps.tag_version.outputs.versionNumber }}
+          name: ${{ steps.tag_version.outputs.new_version }}
+          tag_name: ${{ steps.tag_version.outputs.new_version }}
           body: ${{steps.changelog.outputs.changelog}}
           body_path: CHANGELOG.MD
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: pre-${{ steps.changelog.outputs.toTag }}
-          body: ${{steps.changelog.outputs.changelog}}
-      - name: Check outputs
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
-          echo "CHANGELOG : ${{steps.changelog.outputs.changelog}}"
