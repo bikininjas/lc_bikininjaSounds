@@ -3,8 +3,7 @@ name: Publish Package on Thunderstore
 on:
   workflow_dispatch:
   push:
-    tags:
-      - '*'
+    branches: master
 
 env:
   description: "Bikininjas Sounds with french people voices and memes"
@@ -24,16 +23,7 @@ jobs:
         id: latest_release # used to read version in other steps.
         run: |
           echo "release_number=$(curl https://api.github.com/repos/${{ github.repository }}/releases/latest -s | jq -r '.tag_name // empty')" >> $GITHUB_ENV
-      - name: Release Changelog Builder
-        uses: mikepenz/release-changelog-builder-action@v5.0.0
-        with:
-          ignorePreReleases: "true"
-          fromTag: "1.0.0"
-          toTag: "${{ env.release_number }}"
-          outputFile: "CHANGELOG.MD"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetchViaCommits: true
-          mode: "HYBRID"
+
       - uses: GreenTF/upload-thunderstore-package@v4.3
         with:
           namespace: Bikininjas # the thunderstore 'team' to publish under
