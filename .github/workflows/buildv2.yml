@@ -31,10 +31,40 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
           # fromTag: ${{ steps.tag_version.outputs.new_version }}
-          toTag: ${{ steps.tag_version.outputs.new_version }}
+          # toTag: ${{ steps.tag_version.outputs.new_version }}
           outputFile: "CHANGELOG.MD"
           token: ${{ secrets.GITHUB_TOKEN }}
           mode: "COMMIT"
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+              "categories": [
+                "categories": [
+                  {
+                    "title": "## 🎹 Audio",
+                    "labels": ["audio", "sound", "sounds"]
+                  },
+                  {
+                    "title": "## 🐛 Fixes",
+                    "labels": ["fix", "fixes"]
+                  },
+                  {
+                    "title": "## 🔩 CI/CD (you don't care)",
+                    "labels": ["ci"]
+                  },
+                  {
+                    "key": "tests",
+                    "title": "## 🧪 Tests",
+                    "labels": ["test", "tests"]
+                  }
+              ],
+              "label_extractor": [
+                {
+                  "pattern": "^(build|chore|ci|docs|feat|fix|fixes|perf|refactor|revert|style|test|tests|audio|sound|sounds){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "target": "$1"
+                }
+              ]
+            }
       - name: See CHANGELOG
         run: |
           echo "${{steps.changelog.outputs.changelog}}"
