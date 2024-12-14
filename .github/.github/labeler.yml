@@ -5,10 +5,7 @@ documentation:
 audio:
 - changed-files:
   - any-glob-to-any-file: 
-    - '**/*.wav'
-    - '**/*.mp3'
-    - '**/*.ogg'
-    - '**/*.flac'
+    - 'BepInEx/plugins/CustomSounds/bikininjaSounds/**'
 
 ci:
 - changed-files:
