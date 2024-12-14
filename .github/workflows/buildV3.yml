@@ -7,7 +7,7 @@ on:
       - 'master'
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,6 +46,7 @@ jobs:
           default_prerelease_bump: patch
           tag_prefix: ''
       - name: Release Changelog Builder
+        if: contains(fromJSON(env.LABELS), 'audio')
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v5.0.0
         with:
@@ -85,10 +86,12 @@ jobs:
               ]
             }
       - name: See CHANGELOG
+        if: contains(fromJSON(env.LABELS), 'audio')
         run: |
           echo "${{steps.changelog.outputs.changelog}}"
 
       - name: Release
+        if: contains(fromJSON(env.LABELS), 'audio')
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ steps.tag_version.outputs.new_version }}
