@@ -5,7 +5,9 @@ on:
   push:
     branches-ignore:
       - 'master'
-
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -89,6 +91,18 @@ jobs:
         if: contains(fromJSON(env.LABELS), 'audio')
         run: |
           echo "${{steps.changelog.outputs.changelog}}"
+          if [ -z "${{steps.changelog.outputs.changelog}}" ]; then
+            echo "::error::Changelog is empty"
+            exit 1
+          fi
+    
+      - name: Validate Version
+        if: contains(fromJSON(env.LABELS), 'audio')
+        run: |
+          if [ -z "${{ steps.tag_version.outputs.new_version }}" ]; then
+            echo "::error::New version is empty"
+            exit 1
+          fi
 
       - name: Release
         if: contains(fromJSON(env.LABELS), 'audio')
@@ -113,4 +127,7 @@ jobs:
           do-not-merge-labels: 'audio'
           merge-method: squash
           squash-commit-title: "Auto Merging because it's just CI/CD"
-          squash-commit-message: "PR ${{ steps.cpr.outputs.pr_number }} doesn't need a new release so, merging"
+          squash-commit-message: |
+            Auto-merging CI/CD changes from PR #${{ steps.cpr.outputs.pr_number }}
+            
+            This PR only contains CI/CD updates and doesn't require a new release.
