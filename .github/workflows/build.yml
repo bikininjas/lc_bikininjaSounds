@@ -119,7 +119,7 @@ jobs:
       - name: Auto-Merge Pull Request
         if: contains(fromJSON(env.LABELS), 'cicd')
         uses: pascalgn/automerge-action@v0.16.4
-        with:
+        env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "cicd"
           MERGE_METHOD: "squash"
