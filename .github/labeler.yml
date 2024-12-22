@@ -7,7 +7,7 @@ audio:
   - any-glob-to-any-file: 
     - 'BepInEx/plugins/CustomSounds/bikininjaSounds/**'
 
-ci:
+cicd:
 - changed-files:
   - any-glob-to-any-file: 
     - '.github/**'
