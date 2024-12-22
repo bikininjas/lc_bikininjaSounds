@@ -104,14 +104,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           make_latest: true
+      # - name: Auto-Merge Pull Request
+      #   if: contains(fromJSON(env.LABELS), 'cicd')
+      #   uses: reitermarkus/automerge@v2.8.0
+      #   with:
+      #     pull-request: ${{ steps.cpr.outputs.pr_number }}
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     required-labels: 'cicd'
+      #     do-not-merge-labels: 'audio'
+      #     merge-method: squash
+      #     squash-commit-title: "Auto Merging because it's just CI/CD"
+      #     squash-commit-message: "PR ${{ steps.cpr.outputs.pr_number }} doesn't need a new release so, merging"
+      
       - name: Auto-Merge Pull Request
         if: contains(fromJSON(env.LABELS), 'cicd')
-        uses: reitermarkus/automerge@v2.8.0
+        uses: pascalgn/automerge-action@v0.16.4
         with:
-          pull-request: ${{ steps.cpr.outputs.pr_number }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          required-labels: 'cicd'
-          do-not-merge-labels: 'audio'
-          merge-method: squash
-          squash-commit-title: "Auto Merging because it's just CI/CD"
-          squash-commit-message: "PR ${{ steps.cpr.outputs.pr_number }} doesn't need a new release so, merging"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "cicd"
+          MERGE_METHOD: "squash"
+          MERGE_COMMIT_MESSAGE: "PR ${{ steps.cpr.outputs.pr_number }} doesn't need a new release so, merging"
+          MERGE_REQUIRED_APPROVALS: "0"
+          PULL_REQUEST: ${{ steps.cpr.outputs.pr_number }}
