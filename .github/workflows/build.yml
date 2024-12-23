@@ -71,7 +71,7 @@ jobs:
                   },
                   {
                     "title": "## 🔩 CI/CD (you don't care)",
-                    "labels": ["ci"]
+                    "labels": ["ci", "cicd", "cd"]
                   },
                   {
                     "key": "tests",
@@ -81,7 +81,7 @@ jobs:
               ],
               "label_extractor": [
                 {
-                  "pattern": "^(build|chore|ci|docs|feat|fix|fixes|perf|refactor|revert|style|test|tests|audio|sound|sounds){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "pattern": "^(build|chore|ci|cicd|cd|docs|feat|fix|fixes|perf|refactor|revert|style|test|tests|audio|sound|sounds){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
                   "target": "$1"
                 }
               ]
@@ -102,7 +102,7 @@ jobs:
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
+          prerelease: false
           make_latest: true
       - name: Auto-Merge Pull Request
         if: contains(fromJSON(env.LABELS), 'cicd')
