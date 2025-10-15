@@ -7,7 +7,7 @@ on:
 
 env:
   description: "Bikininjas Sounds with french people voices and memes"
-  mod_name: "BikininjasSounds"
+  mod_name: "BikininjasMonsterSounds"
   website_url: "https://github.com/${{ github.repository }}"
 
 jobs:
